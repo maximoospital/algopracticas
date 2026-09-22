@@ -1,7 +1,6 @@
-import Data.Ratio (Ratio)
 -- Ejercicio 1 a)
-f :: Integer -> Integer 
-f num 
+f :: Integer -> Integer
+f num
     | num == 1 = 8
     | num == 4 = 131
     | num == 16 = 16
@@ -20,7 +19,7 @@ h num = f(g(num))
 k :: Integer -> Integer
 k num = g(f(num))
 
-{- 
+{-
     Ejercicio 2 a)
 
     problema absoluto (numero: Entero) : Entero {
@@ -41,7 +40,7 @@ absoluto num
         asegura: { (absoluto(numero1) >= absoluto(numero2) -> res = absoluto(numero1)) }
         asegura: { (absoluto(numero2) > absoluto(numero1) -> res = absoluto(numero2)) }
     }
--}      
+-}
 
 maximoAbsoluto :: Integer -> Integer -> Integer
 maximoAbsoluto num1 num2
@@ -57,10 +56,10 @@ maximoAbsoluto num1 num2
         asegura: { numero2 > numero2 && numero2 > numero3 = numero2 }
         asegura: { numero3 > numero2 && numero3 > numero1 = numero3 }
     }
--}      
+-}
 
 maximo3 :: Integer -> Integer -> Integer -> Integer
-maximo3 num1 num2 num3 
+maximo3 num1 num2 num3
     | num1 > num2 && num1 > num3 = num1
     | num2 > num1 && num2 > num3 = num2
     | num3 > num2 && num3 > num1 = num3
@@ -73,10 +72,10 @@ maximo3 num1 num2 num3
         requiere: { True }
         asegura: { numero1 == 0 o numero2 == 0 = True }
     }
--}      
+-}
 
 algunoEsCero :: Float -> Float -> Bool
-algunoEsCero num1 num2 
+algunoEsCero num1 num2
     | num1 == 0 || num2 == 0 = True
     | otherwise = False
 
@@ -92,7 +91,7 @@ algunoEsCeroRedux _ _ = False
         requiere: { True }
         asegura: { numero1 == 0 y numero2 == 0 = True }
     }
--}    
+-}
 
 ambosSonCero :: Float -> Float -> Bool
 ambosSonCero num1 num2
@@ -108,16 +107,16 @@ ambosSonCeroRedux _ _ = False
 
     problema enMismoIntervalo (num1: R, num2: R) : Bool {
         requiere: { True }
-        asegura: { res = True <=> ((num1 <= 3 && num2 <= 3) || 
-                                  (3 < num1 && num1 <= 7 && 3 < num2 && num2 <= 7 ) || 
+        asegura: { res = True <=> ((num1 <= 3 && num2 <= 3) ||
+                                  (3 < num1 && num1 <= 7 && 3 < num2 && num2 <= 7 ) ||
                                   (7 < num1 && 7 < num2)) }
     }
--} 
+-}
 
 enMismoIntervalo :: Float -> Float -> Bool
-enMismoIntervalo num1 num2 
+enMismoIntervalo num1 num2
     | num1 <= 3 && num2 <= 3 = True
-    | 3 < num1 && num1 <= 7 && 3 < num2 && num2 <= 7 = True 
+    | 3 < num1 && num1 <= 7 && 3 < num2 && num2 <= 7 = True
     | 7 < num1 && 7 < num2 = True
     | otherwise = False
 
@@ -131,10 +130,10 @@ enMismoIntervalo num1 num2
         asegura: { ((n2 == n3 && n2 /= n1) || (n1 == n3 && n2 /= n1)) -> res = n1+n2 }
         asegura: { (n2 == n1 && n3 /= n1) -> res = n1+n3 }
     }
--} 
+-}
 
-sumaDistintos :: Integer -> Integer -> Integer -> Integer 
-sumaDistintos n1 n2 n3 
+sumaDistintos :: Integer -> Integer -> Integer -> Integer
+sumaDistintos n1 n2 n3
     | n1 == n2 && n2 == n3 = n1
     | n2 == n1 && n3 /= n1 = n1+n3
     | n2 == n3 || n1 == n3 = n1+n2
@@ -147,7 +146,7 @@ sumaDistintos n1 n2 n3
         requiere: { True }
         asegura: { res = true <=> (mod n1 n2 == 0) }
     }
--} 
+-}
 
 esMultiploDe :: Integer -> Integer -> Bool
 esMultiploDe n1 n2 = mod n1 n2 == 0
@@ -159,7 +158,7 @@ esMultiploDe n1 n2 = mod n1 n2 == 0
         requiere: { True }
         asegura: { res = mod absoluto(n1) 10 }
     }
--} 
+-}
 
 digitoUnidades :: Integer -> Integer
 digitoUnidades num = mod (absoluto num) 10
@@ -171,14 +170,14 @@ digitoUnidades num = mod (absoluto num) 10
         requiere: { 9 < n1 }
         asegura: { res = digitoUnidades(div n1 10) }
     }
--} 
+-}
 
 digitoDecenas :: Integer -> Integer
 digitoDecenas n1 = digitoUnidades(div n1 10)
 
 -- Ejercicio 3
 
-estanRelacionados :: Integer -> Integer -> Bool 
+estanRelacionados :: Integer -> Integer -> Bool
 estanRelacionados x y = mod (-x) (y) == 0
 
 {-
@@ -242,7 +241,7 @@ sumaTerna (x1, x2, x3) = x1 + x2 + x3
         asegura: { (mod x1 n1 == 0) && not (mod x2 n1 == 0) && (mod x3 n1 == 0) -> res = x1 + x3 }
         asegura: { (mod x1 n1 == 0) && (mod x2 n1 == 0) && not (mod x3 n1 == 0) -> res = x1 + x2 }
     }
--} 
+-}
 
 sumarSoloMultiplos :: Terna -> Integer -> Integer
 sumarSoloMultiplos (x1, x2, x3) n1
@@ -266,5 +265,3 @@ sumarSoloMultiplos (x1, x2, x3) n1
         asegura: { otherwise -> res = 4 }
     }
 -}
-
-posPrimerPar
