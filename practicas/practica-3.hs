@@ -265,3 +265,85 @@ sumarSoloMultiplos (x1, x2, x3) n1
         asegura: { otherwise -> res = 4 }
     }
 -}
+
+posPrimerPar :: Terna -> Integer
+posPrimerPar (x1, x2, x3) 
+    | mod x1 2 == 0 = 1
+    | mod x2 2 == 0 = 2
+    | mod x3 2 == 0 = 3
+    | otherwise = 4
+
+{-
+    Ejercicio 4 g)
+    problema crearPar (x1: T1, x2: T2) : T1xT2 {
+        requiere: { True }
+        asegura: { res = (x1, x2) }
+    }
+-}
+
+crearPar :: a -> b -> (a, b)
+crearPar a b = (a, b)
+
+{-
+    Ejercicio 4 h)
+    problema invertir ((x1, x2) : T1xT2) : T2xT1 {
+        requiere: { True }
+        asegura: { res = (x2, x1) }
+    }
+-}
+
+invertir :: (a, b) -> (b, a)
+invertir (a, b) = (b, a)
+
+-- Ejercicio 5
+
+f5 :: Integer -> Integer
+f5 n 
+    | n <= 7 = n*n 
+    | otherwise =  2*n-1
+
+g5 :: Integer -> Integer
+g5 n
+    | mod n 2 == 0 = div (n) 2
+    | otherwise = 3*n+1
+
+todosMenores :: Terna -> Bool
+todosMenores (t0, t1, t2) = (f5 t0 > g5 t0) && (f5 t1 > g5 t1) && (f5 t2 > g5 t2)
+
+-- Ejercicio 6
+type Anio = Integer
+type EsBisiesto = Bool
+
+bisiesto :: Anio -> EsBisiesto
+bisiesto año = (mod año 4 == 0) && (mod año 100 /= 0 || mod año 400 == 0)
+
+-- Ejercicio 7
+type Punto3D = (Float, Float, Float)
+
+flAbsoluto :: Float -> Float
+flAbsoluto num
+    | num < 0 = (-num)
+    | otherwise = num
+
+distanciaManhattan :: Punto3D -> Punto3D -> Float
+distanciaManhattan (x0,x1,x2) (y0,y1,y2) = (flAbsoluto(x0-y0)) + (flAbsoluto(x1-y1)) + (flAbsoluto(x2-y2))
+
+-- Ejercicio 8
+
+sumaUltimosDosDigitos :: Integer -> Integer 
+sumaUltimosDosDigitos num = (mod (absoluto num) 10) + (mod (div (absoluto num) 10) 10)
+
+comparar :: Integer -> Integer -> Integer
+comparar a b 
+    | sumaUltimosDosDigitos a < sumaUltimosDosDigitos b = 1
+    | sumaUltimosDosDigitos a > sumaUltimosDosDigitos b = (-1)
+    | otherwise = 0
+
+{-
+    a) Dado un numero real, si es 0 nos da 1, si no 0
+    b) Dado un numero real, si es 1 nos da 15, si es -1 nos da -15
+    c) Dado un numero real, si es menor o igual a 9 nos da 7, si es mayor o igual a 3 nos da 5
+    d) Dados dos numeros reales, los sumamos y dividimos la sumatoria por 2
+    e) Dada una tupla de reales, sumamos el primer y segundo elemento y dividimos la sumatoria por 2
+    f) Dado un numero real y un entero, si el truncado del real es igual al entero, devolvemos true.
+-}
