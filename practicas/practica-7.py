@@ -245,3 +245,145 @@ def ceros_en_posiciones_pares_2(s:list[int]) -> list[int]:
 
 cerosenArray2 = [0,1,2,3,4,5,6]
 print("Ceros en las posiciones pares de [0,1,2,3,4,5,6]", ceros_en_posiciones_pares_2(cerosenArray2))
+
+
+def sin_vocales(s: str) -> str:
+    """
+        Dada una cadena de caracteres s, devuelve una igual pero sin las vocales.   
+    """
+    res: str = ""
+    vocales: list[str] = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
+    letras: list[str] = list(s)
+    for letra in letras:
+        if letra not in vocales: res += letra
+    return res
+
+print("Testeando sin vocales:",sin_vocales("Testeando"))
+
+def reemplaza_vocales(s: str) -> str:
+    """
+        Dada una cadena de caracteres s, devuelve una igual pero con guiones bajos en el lugar de vocales.
+    """
+    res: str = ""
+    vocales: list[str] = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
+    letras: list[str] = list(s)
+    for letra in letras:
+        if letra not in vocales: res += letra
+        else: res += "_"
+    return res
+
+print("Testeando reemplazando vocales:", reemplaza_vocales('Testeando'))
+
+def da_vuelta_str(s: str) -> str:
+    """
+        Dada una cadena de caracteres s, devuelve una cadena inversa de esta.
+    """
+    res: str = ""
+    letras: list[str] = list(s)
+    for i in range(len(letras)):
+        res += letras[len(letras) - i - 1]
+    return res
+
+print("Dando vuelta Hola:", da_vuelta_str("Hola"))
+
+def eliminar_repetidos(s:str) -> str:
+    """
+        Dada una cadena de caracteres s, la devuelve sin repetidos.
+    """
+    res: str = ""
+    letras: list[str] = list(s)
+    letras_sin_repetir: list[str] = []
+    for letra in letras:
+        if letra not in letras_sin_repetir: letras_sin_repetir.append(letra) 
+    for letra in letras_sin_repetir:
+        res += letra
+    return res
+
+print("Probandolo sin letras repetidas:", eliminar_repetidos("Probandolo"))
+
+# Ejercicio 3
+
+def resultado_materia(notas: list[int]) -> int:
+    """
+        Dado un listado de enteros notas, nos dara el estado de aprobacion de la materia.
+    """
+    res: int = 0
+    promedio: int = 0
+    apruebaParciales: bool = True
+    for nota in notas:
+        if nota < 4: apruebaParciales = False 
+        promedio += nota
+    promedio /= len(notas)
+    if apruebaParciales and promedio >= 7: res = 1
+    elif apruebaParciales and promedio >= 4: res = 2
+    else: res = 3
+    return res
+
+def resultado_en_palabras(resmateria: int):
+    res: str = ""
+    if resmateria == 3: res = "Desaprobado."
+    elif resmateria == 2: res = "Aprobado."
+    elif resmateria == 1: res = "Promocionado."
+    return res
+
+print("Estado de materia de un alumno con [10,8,6]?", resultado_en_palabras(resultado_materia([4, 4, 4])))
+
+# Ejercicio 4
+
+def saldo_Actual(movimientos:list[ tuple[str, int]]) -> int:
+    """
+        Dada una lista de tuplas, devolver el balance actual.
+        Saldo inicial 0, string I es ingreso, R es retiro
+    """
+    res: int = 0
+    for movimiento in movimientos:
+        if movimiento[0] == "I": res += movimiento[1]
+        elif movimiento[0] == "R": res -= movimiento[1]
+    return res
+
+print("Saldo actual del ejemplo:", saldo_Actual([("I", 2000), ("R", 20), ("R", 1000), ("I", 300)]))
+
+# Ejercitacion 3: Matrices
+
+# Ej 5
+
+def pertenece_a_cada_uno_version_1(s:list[list[int]], e: int, res: list[bool]):
+    """
+        Para la lista de listas de enteros s, verificaremos si e pertenece a cada uno de ellos.
+    """
+    for lista in s:
+        res.append(pertenece(lista, e))
+    return res
+
+print("Esta 2 en [2,3,4], [1,4,5], [2]? Nuestro resultado incluye un false", pertenece_a_cada_uno_version_1([[2,3,4], [1,4,5], [2]], 2, [False]))
+
+def pertenece_a_cada_uno_version_2(s:list[list[int]], e: int, res: list[bool]):
+    """
+        Para la lista de listas de enteros s, verificaremos si e pertenece a cada uno de ellos.
+    """
+    res.clear()
+    for lista in s:
+        res.append(pertenece(lista, e))
+    return res
+
+print("Esta 2 en [2,3,4], [1,4,5], [2]? Nuestro resultado incluye un false pero lo vamos a limpiar.", pertenece_a_cada_uno_version_2([[2,3,4], [1,4,5], [2]], 2, [True]))
+
+def pertenece_a_cada_uno_version_3(s:list[list[int]], e: int) -> list[bool]:
+    """
+        Para la lista de listas de enteros s, verificaremos si e pertenece a cada uno de ellos.
+    """
+    res: list[bool] = []
+    for lista in s:
+        res.append(pertenece(lista, e))
+    return res
+
+print("Esta 2 en [2,3,4], [1,4,5], [2]? No tenemos un resultado pre hecho", pertenece_a_cada_uno_version_3([[2,3,4], [1,4,5], [2]], 2))
+
+# Como cambia? Cambia que en la primer version recibe una variable ya hecha donde guardara su info, y esta tiene que ser de mayor o igual longitud a la de las listas ingresadas.
+#                         en la segunda version recibe una variable ya hecha donde guardara su info, y debera limpiarla para que sea de IGUAL longitud a la de las listas ingresadas,
+#                       y en la tercera version no recibe una variable, la crea dentro y devuelve el valor.
+# Se puede usar la implementacion del segundo ejercicio en el primero ya que cumple la parte de igual, mientras que al reves no porque no se cumple la parte de mayor o igual.
+
+# Ej 6
+
+
