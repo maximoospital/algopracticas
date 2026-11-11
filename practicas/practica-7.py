@@ -65,6 +65,7 @@ def ordenados(s:list[int]) -> bool:
             i += 1
         else:
             res = False
+            i += 1
     return res
 
 print ("Esta ordenada la secuencia 1,2,3,4?", ordenados([1,2,3,4]))
@@ -249,7 +250,7 @@ print("Ceros en las posiciones pares de [0,1,2,3,4,5,6]", ceros_en_posiciones_pa
 
 def sin_vocales(s: str) -> str:
     """
-        Dada una cadena de caracteres s, devuelve una igual pero sin las vocales.   
+        Dada una cadena de caracteres s, devuelve una igual pero sin las vocales.
     """
     res: str = ""
     vocales: list[str] = ['a','e','i','o','u', 'A', 'E', 'I', 'O', 'U']
@@ -294,7 +295,7 @@ def eliminar_repetidos(s:str) -> str:
     letras: list[str] = list(s)
     letras_sin_repetir: list[str] = []
     for letra in letras:
-        if letra not in letras_sin_repetir: letras_sin_repetir.append(letra) 
+        if letra not in letras_sin_repetir: letras_sin_repetir.append(letra)
     for letra in letras_sin_repetir:
         res += letra
     return res
@@ -311,7 +312,7 @@ def resultado_materia(notas: list[int]) -> int:
     promedio: int = 0
     apruebaParciales: bool = True
     for nota in notas:
-        if nota < 4: apruebaParciales = False 
+        if nota < 4: apruebaParciales = False
         promedio += nota
     promedio /= len(notas)
     if apruebaParciales and promedio >= 7: res = 1
@@ -386,4 +387,175 @@ print("Esta 2 en [2,3,4], [1,4,5], [2]? No tenemos un resultado pre hecho", pert
 
 # Ej 6
 
+def es_matriz(s: list[list]) -> bool:
+    tieneFilas: bool = len(s) > 0
+    lasFilasTienenColumnas: bool = False
+    lasFilasSonIguales: bool = True
+    if tieneFilas: lasFilasTienenColumnas = len(s[0]) > 0
+    if lasFilasTienenColumnas:
+        for fila in s:
+            if len(fila) != len(s[0]): lasFilasSonIguales = False
+    return tieneFilas and lasFilasTienenColumnas and lasFilasSonIguales
 
+print("Es matriz [[0, 0, 0], [0, 0, 0], [0, 0, 0]]?", es_matriz([[0, 0, 0], [0, 0, 0], [0, 0, 0]]))
+print("y [[0,0], [0,0,0]]", es_matriz([[0,0], [0,0,0]]))
+
+resTestFO = []
+def filas_ordenadas(m: list[list[int]], res: list[bool]):
+    assert es_matriz(m)
+    for fila in m:
+        res.append(ordenados(fila))
+
+filas_ordenadas([[0, 1, 2, 3], [0, 1, 4, 3]], resTestFO)
+
+print("Estan ordenados [[0, 1, 2, 3], [0, 1, 5, 3]]?", resTestFO)
+
+def columna(m: list[list[int]], c: int) -> list[int]:
+    assert es_matriz(m) and c < len(m[0]) and c >= 0
+    res: list[int] = []
+    for fila in m:
+        res.append(fila[c])
+    return res
+
+print("Columna 2 de [[0, 1, 2], [3, 4, 5]]?", columna([[0, 1, 2], [3, 4, 5]], 2))
+
+def columnas_ordenadas (m: list[list[int]]) -> list[bool]:
+    assert es_matriz(m)
+    res : list[bool] = []
+    for numColumna in range(len(m[0])):
+        res.append( ordenados( columna(m, numColumna) ) )
+    assert len(res) == len(m[0])
+    return res
+
+print("Estan ordenadas las columnas de [[0, 1, 2, 3], [1, 0, 3, 5], [2, 0, 3, 6]]", columnas_ordenadas([[1, 2, 3, 4], [1, 0, 3, 5], [2, 0, 3, 6]]))
+
+
+def transponer (m: list[list]) -> list[list]:
+    assert es_matriz(m)
+    res : list[list] = []
+    for numColumna in range(len(m[0])):
+        res.append ( columna(m, numColumna) )
+    return res
+
+print("Trasposicion de [[1, 2], [3, 4], [5, 6]]", transponer([[1, 2], [3, 4], [5, 6]]))
+
+def tateti_valido (m: list[list[str]]) -> bool:
+    assert es_matriz(m) and len(m) == 3 and len(m[0]) == 3
+    valores_de_tateti: list[str] = ['O', 'X', ' ']
+    res: bool = True
+    for fila in m:
+        for columna in fila:
+            if columna not in valores_de_tateti: res = False
+    return res
+
+def quien_gana_tateti (m: list[list[str]]) -> int:
+    assert tateti_valido(m)
+    filas: list[list[str]] = m
+    columnas: list[list[str]] = transponer(m)
+    ganador: int = 2
+    hay3XAlineadasVertical: bool = False
+    hay3OAlineadasVertical: bool = False
+    hay3XAlineadasHorizontal: bool = False
+    hay3OAlineadasHorizontal: bool = False
+    hay3XAlineadasDiagonal: bool = False
+    hay3OAlineadasDiagonal: bool = False
+    for fila in filas:
+        if (fila[0] == fila[1] == fila[2]):
+            if fila[0] == 'X': hay3XAlineadasHorizontal = True
+            elif fila[0] == 'O': hay3OAlineadasHorizontal = True
+    for columna in columnas:
+        if (columna[0] == columna[1] == columna[2]):
+            if columna[0] == 'X': hay3XAlineadasVertical = True
+            elif columna[0] == 'O': hay3OAlineadasVertical = True
+    if (m[0][0] == m[1][1] == m[2][2]) or (m[0][2] == m[1][1] == m[2][0]):
+        if m[1][1] == 'X': hay3XAlineadasDiagonal = True
+        elif m[1][1] == 'O': hay3OAlineadasDiagonal = True
+    if hay3XAlineadasVertical: assert not hay3OAlineadasVertical
+    elif hay3OAlineadasVertical: assert not hay3XAlineadasVertical
+    elif hay3XAlineadasHorizontal: assert not hay3OAlineadasHorizontal
+    elif hay3OAlineadasHorizontal: assert not hay3XAlineadasHorizontal
+    if hay3OAlineadasVertical or hay3OAlineadasHorizontal or hay3OAlineadasDiagonal: ganador = 0
+    elif hay3XAlineadasVertical or hay3XAlineadasHorizontal or hay3XAlineadasDiagonal: ganador = 1
+    return ganador
+
+print("Quien gano en [[' ', ' ', 'X'], [' ','X',' '], ['X',' ',' ']]", quien_gana_tateti([[' ', ' ', 'X'], [' ','X',' '], ['X',' ',' ']]))
+
+def tomar_nombres() -> list[str]:
+    res: list[str] = []
+    texto: str = input("Ingresa un nombre. 'listo' o nada detiene esto: \n")
+
+    while texto.lower() not in ["", " ", "listo"]:
+        res.append(texto)
+        texto = input("Ingresa otro nombre. 'listo' o nada detiene esto: \n")
+
+    return res
+
+# print("Nombres ingresados:", tomar_nombres())
+
+def historial_monedero() -> list[ tuple[str, int] ]:
+    res: list[tuple[str, int]] = []
+    carga: int = 0
+    tipoActual: str = input("\nHISTORIAL DE MONEDERO \nCarga Actual: 0 \n Ingresa tipo de operacion. \n C para cargar creditos \n D para descontar creditos \n X para salir. \n")
+    montoActual: int = 0
+
+    while tipoActual.upper() in ['C', 'D']:
+        montoActual = int(input("Ingresa monto de operacion.\n"))
+        if tipoActual.upper() == 'C': carga += montoActual
+        elif tipoActual.upper() == 'D': carga -= montoActual
+        res.append((tipoActual, montoActual))
+        print("\nOperacion registrada.\nCarga Actual:",carga)
+        tipoActual = input(" Ingresa tipo de operacion. \n C para cargar creditos \n D para descontar creditos \n X para salir. \n")
+
+    return res
+
+# print("Operaciones registradas:", historial_monedero())
+
+import numpy as np
+from numpy._core.fromnumeric import resize
+
+def puntaje_sem(puntaje: float, carta: int) -> float:
+    if carta in [10, 11, 12]: puntaje += 0.5
+    else: puntaje += 1
+    return puntaje
+
+def siete_y_medio():
+    puntaje: float = 0
+    cartaActual: int = np.random.choice([1, 2, 3, 4, 5, 6, 7, 10, 11, 12])
+    cartasSacadas: int = 1
+    puntaje = puntaje_sem(puntaje, cartaActual)
+    print("Hola! Tu primer carta fue:", cartaActual, "\npor ende tu puntaje inicial es:", puntaje)
+    accion: str = input("Que haces?\n - Sacar otra carta\n - Plantarse.\n")
+    while puntaje < 7.5 and accion.lower() in ["saco", "sacamos", "1", "saca", "sacar", "sacar carta", "sacar una carta", "sacar otra carta", "y saco", "sacame", "saca otra", "saco otra", "saquemos otra", "saquemos otra maestro"]:
+        cartaActual = np.random.choice([1, 2, 3, 4, 5, 6, 7, 10, 11, 12])
+        cartasSacadas += 1
+        puntaje = puntaje_sem(puntaje, cartaActual)
+        if (puntaje >= 7.5):
+            print("PERDISTE PISCUI!!!\n Tu puntaje final es:", puntaje, "\nLograste eso en:", cartasSacadas, "cartas.")
+            break
+        print("Sacaste la carta:", cartaActual, "\npor ende tu puntaje ahora es:", puntaje)
+        print("Vas:", cartasSacadas, "cartas sacadas.")
+        accion = input("Que haces?\n - Sacar otra carta\n - Plantarse.\n")
+    if puntaje < 7.5: print("Chau!\n Tu puntaje final es:", puntaje, "\nLograste eso en:", cartasSacadas, "cartas.")
+
+# siete_y_medio()
+
+def analizar_pass(password: str) -> str:
+    res: str = "ROJA"
+    caracteres: list[str] = list(password)
+    cantidadMayusculas: int = 0
+    cantidadMinusculas: int = 0
+    cantidadNumeros: int = 0
+    for caracter in caracteres:
+        if caracter in ['0','1','2','3','4','5','6','7','8','9']: cantidadNumeros += 1
+        elif "A" <= caracter <= "Z": cantidadMayusculas += 1
+        elif "a" <= caracter <= "z": cantidadMinusculas += 1
+    if len(password) > 5:
+        res = "AMARILLA"
+        if cantidadNumeros >= 1 and cantidadMinusculas >= 1 and cantidadMayusculas >= 1: res = "VERDE"
+    return res
+
+def analisis_fortaleza():
+    password: str = input("Ingrese aqui su contraseña para analizarla: ")
+    return analizar_pass(password)
+
+print("Su contraseña es:", analisis_fortaleza())
