@@ -1,4 +1,5 @@
 -- Ejercicio 1 a)
+
 f :: Integer -> Integer
 f num
     | num == 1 = 8
